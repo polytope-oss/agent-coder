@@ -243,7 +243,7 @@ $agent_entry" "$init_file" > "${init_file}.tmp" && mv "${init_file}.tmp" "$init_
         fi
         echoh "📝 Registered agent in $init_file"
     else
-        echoh "⚠️  Could not find AGENT_DEFINITIONS list in $init_file"
+        echoh "⚠️ Could not find AGENT_DEFINITIONS list in $init_file"
         echoh "   Please manually add: $agent_entry"
     fi
 }
@@ -300,8 +300,8 @@ main() {
         agent_description="An AI agent that processes requests"
     fi
 
-    echoh "🤖 Creating agent: $agent_name"
-    echoh "   Description: $agent_description"
+    echoh "Creating agent: $agent_name"
+    echoh "Description: $agent_description"
     echoh ""
 
     # Convert agent name to snake_case for file paths

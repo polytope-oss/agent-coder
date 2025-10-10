@@ -1,6 +1,6 @@
 instructions: |
   This is a set of tools designed to help you write great AI agents. If the user asks for an agent,
-  use the create-agent-api tool to create a new agent API project. That tool response will contain detailed
-  instructions on how to proceed.
+  use the add-agent-server tool to create a new agent API project. That tool response will contain
+  detailed instructions on how to proceed.
 include:
   - templates
