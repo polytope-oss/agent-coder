@@ -5,9 +5,11 @@ Agent registry for managing and tracking agent instances.
 import asyncio
 from typing import Any
 from uuid import UUID
+from pydantic import ValidationError
 from .utils import log
 from .models.calls import CallThought, CallAction, CallResult, CallError, CallStatus
 from .repositories.calls import CallRepository
+from . import conf
 
 logger = log.get_logger(__name__)
 
@@ -133,17 +135,52 @@ class AgentRegistry:
             key_findings = final_result.get("key_findings")
             citations = final_result.get("citations")
 
-        result = CallResult(
-            call_id=call_id,
-            success=data.get("achieved", False),  # Default should be False, not True
-            result=final_result,
-            executive_summary=executive_summary,
-            key_findings=key_findings,
-            citations=citations,
-            metadata=metadata or None,
-            raw_data=data,
-        )
-        await self.call_repository.register_call_done(call_id, result)
+        try:
+            result = CallResult(
+                call_id=call_id,
+                success=data.get("achieved", False),  # Default should be False, not True
+                result=final_result,
+                executive_summary=executive_summary,
+                key_findings=key_findings,
+                citations=citations,
+                metadata=metadata or None,
+                raw_data=data,
+            )
+            await self.call_repository.register_call_done(call_id, result)
+        except ValidationError as e:
+            # Agent output doesn't match expected schema
+            debug_mode = conf.get_debug_mode()
+
+            if debug_mode:
+                # In debug mode, include full validation details
+                error_message = "Agent output validation failed: " + str(e)
+                error_details = {
+                    "validation_errors": [
+                        {
+                            "field": ".".join(str(loc) for loc in err["loc"]),
+                            "type": err["type"],
+                            "message": err["msg"],
+                        }
+                        for err in e.errors()
+                    ],
+                    "raw_output": data.get("final_result"),
+                }
+            else:
+                # In production mode, use generic message
+                error_message = "Agent produced output that doesn't match the expected schema"
+                error_details = None
+
+            # Mark the call as failed
+            error = CallError(
+                call_id=call_id,
+                error_type="output_validation_error",
+                error_message=error_message,
+                error_details=error_details,
+                recoverable=False,
+                raw_data=data,
+            )
+            await self.call_repository.register_call_error(call_id, error)
+            logger.error(f"Output validation error for call {call_id}: {error_message}")
 
     async def _handle_error_event(self, call_id: UUID, data: Any) -> None:
         """

@@ -46,7 +46,7 @@ add_to_pyproject() {
     local temp_file
 
     if script_key_exists "$script_name"; then
-        echoh "✅ Script '$script_name' already in pyproject.toml"
+        echoh "Script '$script_name' already in pyproject.toml"
         return 0
     fi
 
@@ -89,7 +89,7 @@ add_to_pyproject() {
 
     # Replace original file
     mv "$temp_file" pyproject.toml
-    echoh "✅ Added '$script_name' to pyproject.toml"
+    echoh "Added '$script_name' to pyproject.toml"
     return 0
 }
 
@@ -99,7 +99,7 @@ create_script_file() {
     local script_file="$2"
 
     if [ -f "$script_file" ]; then
-        echoh "📄 Script already exists: $script_file"
+        echoh "Script already exists: $script_file"
     else
         # Ensure directory exists
         mkdir -p "$(dirname "$script_file")"
@@ -114,17 +114,17 @@ Add your script description here.
 
 def main():
     """Main function for ${script_name}."""
-    print("🚀 Running ${script_name}...")
+    print("Running ${script_name}...")
 
     # Add your script logic here
     # Example: test an agent, analyze data, etc.
 
-    print("✅ ${script_name} completed successfully!")
+    print("${script_name} completed successfully!")
 
 if __name__ == "__main__":
     main()
 EOF
-        echoh "✅ Created script: $script_file"
+        echoh "Created script: $script_file"
     fi
 }
 
@@ -134,9 +134,9 @@ show_completion() {
     local script_file="$2"
 
     echoh ""
-    echoh "🎉 Script scaffolded successfully!"
+    echoh "Script scaffolded successfully!"
     echoh ""
-    echoh "📁 Script location: $script_file"
+    echoh "Script location: $script_file"
     echoh ""
     echoh "Next steps:"
     echoh "1. Edit $script_file to add your logic"

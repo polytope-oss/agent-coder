@@ -17,10 +17,10 @@ shift  # Remove script name from arguments
 SCRIPT_FILE="src/scripts/${SCRIPT_NAME//-/_}.py"
 
 if [ -f "$SCRIPT_FILE" ] && ! grep -q "^${SCRIPT_NAME} =" pyproject.toml 2>/dev/null; then
-    echo "🔧 Auto-fixing: Script '$SCRIPT_NAME' exists but not in pyproject.toml"
+    echo "Auto-fixing: Script '$SCRIPT_NAME' exists but not in pyproject.toml"
     "$(dirname "$0")/add-script" "$SCRIPT_NAME" maybe-add-to-pyproject
     if [ $? -eq 0 ]; then
-        echo "✅ Added '$SCRIPT_NAME' to pyproject.toml"
+        echo "Added '$SCRIPT_NAME' to pyproject.toml"
     fi
 fi
 

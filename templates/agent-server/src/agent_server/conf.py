@@ -31,6 +31,12 @@ HTTP_AUTORELOAD = EnvVarSpec(
     default="false",
     type=(bool, ...),
 )
+HTTP_DEBUG = EnvVarSpec(
+    id="HTTP_DEBUG",
+    parse=lambda x: x.lower() == "true",
+    default="false",
+    type=(bool, ...),
+)
 
 ## Opper API ##
 OPPER_API_KEY = EnvVarSpec(
@@ -72,6 +78,7 @@ def validate() -> bool:
         HTTP_HOST,
         HTTP_PORT,
         HTTP_AUTORELOAD,
+        HTTP_DEBUG,
         OPPER_API_KEY,
     ]
 
@@ -112,6 +119,11 @@ def get_http_conf() -> HttpServerConf:
         port=env.parse(HTTP_PORT),
         autoreload=env.parse(HTTP_AUTORELOAD),
     )
+
+
+def get_debug_mode() -> bool:
+    """Get debug mode flag."""
+    return env.parse(HTTP_DEBUG)
 
 
 def get_opper_api_key() -> str:

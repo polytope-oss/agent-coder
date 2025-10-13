@@ -18,7 +18,7 @@ The UI runs on port 3000 by default and expects the agent API to be running on p
 
 ## For Coding Agents
 
-## 📁 Import Path Rules
+## Import Path Rules
 
 **CRITICAL**: Always use these import aliases:
 
@@ -26,12 +26,12 @@ The UI runs on port 3000 by default and expects the agent API to be running on p
 - `@/` = project root - shared utilities
 
 ```tsx
-// ✅ CORRECT
+// CORRECT
 import { useCallStore } from "~/lib/callStore";     // app/lib/callStore.ts
 import { EventCard } from "~/components/EventCard"; // app/components/EventCard.tsx
 import { cn } from "@/lib/utils";                   // lib/utils.ts (ROOT, not app!)
 
-// ❌ WRONG
+// WRONG
 import { cn } from "~/lib/utils";                   // utils is in ROOT lib/, not app/lib/
 ```
 
@@ -62,8 +62,8 @@ Always use shadcn/ui's semantic color classes that automatically adapt to the cu
 Never use standard Tailwind color classes - they break theme consistency:
 ```tsx
 // WRONG - These will cause visibility issues
-<div className="bg-white text-black">        // ❌ Breaks in dark mode
-<div className="bg-gray-50 text-gray-900">   // ❌ No theme adaptation
+<div className="bg-white text-black">        // Breaks in dark mode
+<div className="bg-gray-50 text-gray-900">   // No theme adaptation
 ```
 
 ### Working with Colors

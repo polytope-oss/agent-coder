@@ -31,11 +31,11 @@ class ColorFormatter(logging.Formatter):
         "CRITICAL": "\033[35m",  # Magenta
     }
     prefixes = {
-        "DEBUG": "🐛 ",
+        "DEBUG": "DEBUG: ",
         "INFO": "",  # No prefix for INFO
-        "WARNING": "⚠️  ",
-        "ERROR": "❌ ",
-        "CRITICAL": "💀 ",
+        "WARNING": "WARNING: ",
+        "ERROR": "ERROR: ",
+        "CRITICAL": "CRITICAL: ",
     }
     reset = "\033[0m"
 
@@ -56,7 +56,7 @@ logger.setLevel(logging.INFO)
 def log_thought(iteration: int, event: dict, verbose: bool = False):
     """Log a thought event with pretty-printed data."""
     if verbose:
-        logger.info(f"\n💭 Thought (iteration {iteration}):")
+        logger.info(f"\nThought (iteration {iteration}):")
         thought_data = {
             "reasoning": event.get("reasoning"),
             "goal_achieved": event.get("goal_achieved"),
@@ -68,13 +68,13 @@ def log_thought(iteration: int, event: dict, verbose: bool = False):
         reasoning = event.get("reasoning", "")
         if len(reasoning) > 80:
             reasoning = reasoning[:77] + "..."
-        logger.info(f"💭 Iteration {iteration}: {reasoning}")
+        logger.info(f"Iteration {iteration}: {reasoning}")
 
 
 def log_action(iteration: int, tool: str, event: dict, verbose: bool = False):
     """Log an action event with pretty-printed data."""
     if verbose:
-        logger.info(f"\n🔧 Action (iteration {iteration}): {tool}")
+        logger.info(f"\nAction (iteration {iteration}): {tool}")
         action_data = {
             "parameters": event.get("parameters"),
             "result": event.get("result"),
@@ -85,7 +85,7 @@ def log_action(iteration: int, tool: str, event: dict, verbose: bool = False):
             logger.info(json.dumps(action_data, indent=2))
     else:
         success = "✓" if event.get("success", True) else "✗"
-        logger.info(f"🔧 Iteration {iteration}: {tool} {success}")
+        logger.info(f"Iteration {iteration}: {tool} {success}")
 
 
 def log_success(result: dict, execution_time: float):
@@ -238,6 +238,7 @@ def main():
             env = os.environ.copy()
             env["USE_POSTGRES"] = "false"
             env["LOG_LEVEL"] = "WARNING"
+            env["HTTP_DEBUG"] = "true"
 
             server_proc = subprocess.Popen(
                 ["./bin/uv-run", "app"], env=env, stdout=sys.stderr, stderr=sys.stderr

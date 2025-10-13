@@ -15,17 +15,17 @@ if [ "$HTTP_AUTORELOAD" = "true" ] || [ "$HTTP_AUTORELOAD" = "1" ]; then
       echo "Unsupported architecture: $ARCH, skipping watchexec installation"
       exec uv run --active app
     fi
-    
+
     # Download and install watchexec quietly
     WATCHEXEC_VERSION="2.3.2"
     WATCHEXEC_URL="https://github.com/watchexec/watchexec/releases/download/v${WATCHEXEC_VERSION}/watchexec-${WATCHEXEC_VERSION}-${WATCHEXEC_ARCH}-unknown-linux-musl.deb"
-    
+
     echo "Installing watchexec for hot reload..."
     wget -q -O /tmp/watchexec.deb "$WATCHEXEC_URL" && \
     dpkg -i /tmp/watchexec.deb >/dev/null 2>&1 && \
     rm /tmp/watchexec.deb
   fi
-  
+
   # Run with watchexec if available
   if command -v watchexec >/dev/null 2>&1; then
     exec watchexec --watch pyproject.toml --restart --shell=none -- uv run --active app

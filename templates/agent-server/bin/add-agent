@@ -30,7 +30,7 @@ create_agent_file() {
     local agent_file="src/agent_server/agents/${snake_name}_agent.py"
 
     if [ -f "$agent_file" ]; then
-        echoh "📄 Agent file already exists: $agent_file"
+        echoh "Agent file already exists: $agent_file"
         return 1
     fi
 
@@ -137,7 +137,7 @@ ${upper_snake}_AGENT = AgentDefinition(
 )
 EOF
 
-    echoh "✅ Created agent file: $agent_file"
+    echoh "Created agent file: $agent_file"
 
     # Create test script
     local test_file="src/scripts/test_${snake_name}.py"
@@ -187,10 +187,10 @@ def test_${snake_name}():
         )
 
         if result["status"] == "completed":
-            print_success("✅ Agent executed successfully!")
+            print_success("Agent executed successfully!")
             return True
         else:
-            print_error(f"❌ Agent failed: {result.get('error', 'Unknown error')}")
+            print_error(f"Agent failed: {result.get('error', 'Unknown error')}")
             return False
 
         return True
@@ -201,7 +201,7 @@ if __name__ == "__main__":
     success = test_${snake_name}()
     sys.exit(0 if success else 1)
 EOF
-    echoh "📝 Created test script: $test_file"
+    echoh "Created test script: $test_file"
 
     return 0
 }
@@ -241,10 +241,10 @@ update_agents_init() {
             sed "/^    # Example:/a\\
 $agent_entry" "$init_file" > "${init_file}.tmp" && mv "${init_file}.tmp" "$init_file"
         fi
-        echoh "📝 Registered agent in $init_file"
+        echoh "Registered agent in $init_file"
     else
-        echoh "⚠️ Could not find AGENT_DEFINITIONS list in $init_file"
-        echoh "   Please manually add: $agent_entry"
+        echoh "Could not find AGENT_DEFINITIONS list in $init_file"
+        echoh "Please manually add: $agent_entry"
     fi
 }
 
@@ -278,7 +278,7 @@ main() {
 
     # Validate required arguments
     if [ -z "$agent_name" ]; then
-        echo "❌ Error: Agent name is required"
+        echo "Error: Agent name is required"
         echo ""
         echo "Usage: $0 <agent-name> [description]"
         echo "   or: $0 --name <agent-name> --description <description>"
@@ -290,7 +290,7 @@ main() {
 
     # Validate agent name format (kebab-case)
     if ! echo "$agent_name" | grep -qE '^[a-z][a-z0-9-]*[a-z0-9]$'; then
-        echo "❌ Error: Agent name must be kebab-case (lowercase letters, numbers, and hyphens)"
+        echo "Error: Agent name must be kebab-case (lowercase letters, numbers, and hyphens)"
         echo "   Example: research-assistant, code-reviewer, data-analyzer"
         exit 1
     fi
@@ -313,7 +313,7 @@ main() {
         update_agents_init "$agent_name"
 
         echoh ""
-        echoh "🎉 Agent created successfully!"
+        echoh "Agent created successfully!"
         echoh ""
         echoh "Next steps:"
         echoh "0. READ the generated agent file first to understand the structure:"
