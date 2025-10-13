@@ -17,15 +17,17 @@ tools:
               path: agent-server
               on-conflict: skip
               add-to-tools: [{tool: default, call: agent-server}]
-            - template: https://github.com/opper-ai/opperai-agent-sdk.git
+            - template: https://github.com/opper-ai/opperai-agent-sdk.git@832d6123275b8841aea03e996da87413a9440039
               path: lib/py/opper-agent-sdk
               print-files: []
               on-conflict: skip
+              print-tree: false
             - template: {type: repo, repo: "#pt-clj pt/module-repo-ref", path: agent-dashboard}
               path: agent-dashboard
               on-conflict: skip
               print-files: []
               add-to-tools: [{tool: default, call: agent-dashboard}]
+              print-tree: false
       - id: agent-server
         after: {step: scaffold-agent-server}
         code: '#pt-clj (pt/call-module "agent-server" {}))'
