@@ -30,12 +30,13 @@ Get an Opper API key from [https://platform.opper.ai](https://platform.opper.ai)
 
 ### Step 1: Include this repository
 
-Create a `polytope.yml` file with the following content in your project directory:
+Include this repository's tools in your project:
 
-```yaml
-include:
-  - gh:aeriksson/opper-coder
+```bash
+pt include gh:polytope-oss/agent-coder
 ```
+
+This creates a `polytope.yml` file (unless you already had one) and adds this repository as an include entry.
 
 ### Step 2: Set your Opper API key
 
